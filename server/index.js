@@ -2,7 +2,7 @@ import express from 'express';
 import fileUpload from 'express-fileupload'
 import IndexRoutes from './routes/index.routes'
 import ImageRoutes from './routes/images.routes'
-import config from './config';
+import './db';
 const app = express();
 
 app.set('port', process.env.PORT||4000);
