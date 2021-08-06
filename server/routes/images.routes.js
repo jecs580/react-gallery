@@ -10,8 +10,21 @@ const s3 = new AWS.S3({
     endpoint:spacesEndpoint
 });
 
-router.get('/api/images', async(req,res)=>{})
-router.get('/api/images/:id', async(req,res)=>{})
+router.get('/api/images', async(req,res)=>{
+    const images = await Image.find();
+    return res.json({
+        ok:true,
+        images
+    })
+
+})
+router.get('/api/images/:id', async(req,res)=>{
+    const image = await Image.findById(req.params.id);
+    return res.json({
+        ok:true,
+        image
+    })
+})
 router.post('/api/images/upload', async(req,res)=>{
     const {file} = req.files;
     try {
