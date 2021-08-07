@@ -17,14 +17,14 @@ router.get('/api/images', async(req,res)=>{
         images
     })
 
-})
+});
 router.get('/api/images/:id', async(req,res)=>{
     const image = await Image.findById(req.params.id);
     return res.json({
         ok:true,
         image
     })
-})
+});
 router.post('/api/images/upload', async(req,res)=>{
     const {file} = req.files;
     try {
@@ -50,7 +50,18 @@ router.post('/api/images/upload', async(req,res)=>{
         res.send(error);
     }    
    
-})
-router.delete('/api/images/:id', async(req,res)=>{})
+});
+router.delete("/api/images/:id", async (req, res) => {
+    const deletedImage = await Image.findByIdAndDelete(req.params.id);
+  
+    await s3
+      .deleteObject({
+        Bucket: config.BucketName,
+        Key: deletedImage.key,
+      })
+      .promise();
+  
+    res.json(deletedImage);
+  });
 
 export default router;
